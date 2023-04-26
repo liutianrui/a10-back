@@ -254,28 +254,28 @@ class dataset(db.Model):
         # self.rank = rank
 
 
-# class Score_rank(db.Model):
-#     ID = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(64))
-#     JAVA = db.Column(db.Integer)
-#     Python = db.Column(db.Integer)
-#     DS = db.Column(db.Integer)
-#     OS = db.Column(db.Integer)
-#     CS = db.Column(db.Integer)
-#     CN = db.Column(db.Integer)
-#     rank = db.Column(db.Integer)
-#     notice = db.Column(db.String(64))
-#     grade = db.Column(db.CHAR(200))
-#
-#     def __init__(self, ID, name, JAVA, Python, DS, OS, CS, CN, rank, notice, grade):
-#         self.ID = ID
-#         self.name = name
-#         self.JAVA = JAVA
-#         self.Python = Python
-#         self.DS = DS
-#         self.OS = OS
-#         self.CS = CS
-#         self.CN = CN
-#         self.rank = rank
-#         self.notice = notice
-#         self.grade = grade
+class Score_rank(db.Model):
+    ID = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    JAVA = db.Column(db.Integer)
+    Python = db.Column(db.Integer)
+    DS = db.Column(db.Integer)
+    OS = db.Column(db.Integer)
+    CS = db.Column(db.Integer)
+    CN = db.Column(db.Integer)
+    rank = db.Column(db.Integer)
+    notice = db.Column(db.String(64))
+    grade = db.Column(db.CHAR(200))
+
+    def __init__(self, ID, name, JAVA, Python, DS, OS, CS, CN, rank, notice, grade):
+        self.ID = ID
+        self.name = name
+        self.JAVA = JAVA
+        self.Python = Python
+        self.DS = DS
+        self.OS = OS
+        self.CS = CS
+        self.CN = CN
+        self.rank = rank
+        self.notice = notice
+        self.grade = grade

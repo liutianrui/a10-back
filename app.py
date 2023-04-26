@@ -267,18 +267,16 @@ def score_list():
 #         {'list': list_result, 'current_page': current_page, 'total_page': total_page, 'total_data': total_data})
 #
 #
-# # 删除学生记录接口
-# @app.route("/delStu", methods=['POST',"GET"])
-# def delStu():
-#     """
-#     :return: 根据id和name返回查询结果
-#     """
-#     # 获取ID进行查询
-#     ID = request.get_json()['ID']
-#     db.session.query(Score_rank).filter_by(ID=ID).delete()
-#     db.session.commit()
-#
-#     return Respones_s.success('SUCCESS')
+
+# # 删除数据集接口
+@app.route("/delDataset", methods=['POST',"GET"])
+def delDataset():
+    # 获取sample_id进行查询
+    ID = request.get_json()['ID']
+    db.session.query(dataset).filter_by(sample_id=ID).delete()
+    db.session.commit()
+
+    return Respones_s.success('SUCCESS')
 
 
 if __name__ == '__main__':
