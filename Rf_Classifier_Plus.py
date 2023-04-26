@@ -17,31 +17,43 @@ import pandas as pd
 # from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 
-def classify(filename):
-    data = filename
-    Fault_diagnosis_data = pd.read_csv(data,usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                                                21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
-                                                40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58,
-                                                59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,
-                                                78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
+
+def classify(filepath):
+    data = filepath
+    Fault_diagnosis_data = pd.read_csv(data,
+                                       usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                                                20,
+                                                21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+                                                39,
+                                                40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
+                                                58,
+                                                59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76,
+                                                77,
+                                                78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+                                                96,
                                                 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108])
 
     feature_mean = ['feature0', 'feature2', 'feature4', 'feature7', 'feature8', 'feature11', 'feature15', 'feature22',
                     'feature23',
-                    'feature27', 'feature28', 'feature30', 'feature38', 'feature41', 'feature42', 'feature43', 'feature48',
+                    'feature27', 'feature28', 'feature30', 'feature38', 'feature41', 'feature42', 'feature43',
+                    'feature48',
                     'feature49',
-                    'feature51', 'feature56', 'feature58', 'feature63', 'feature70', 'feature71', 'feature75', 'feature79',
+                    'feature51', 'feature56', 'feature58', 'feature63', 'feature70', 'feature71', 'feature75',
+                    'feature79',
                     'feature81',
-                    'feature82', 'feature84', 'feature85', 'feature86', 'feature95', 'feature96', 'feature99', 'feature102',
+                    'feature82', 'feature84', 'feature85', 'feature86', 'feature95', 'feature96', 'feature99',
+                    'feature102',
                     'feature106']
-    feature_median = ['feature3', 'feature10', 'feature12', 'feature17', 'feature18', 'feature21', 'feature24', 'feature25',
+    feature_median = ['feature3', 'feature10', 'feature12', 'feature17', 'feature18', 'feature21', 'feature24',
+                      'feature25',
                       'feature26',
                       'feature29', 'feature34', 'feature37', 'feature40', 'feature45', 'feature47', 'feature50',
                       'feature52', 'feature53',
                       'feature55', 'feature62', 'feature68', 'feature69', 'feature73', 'feature74', 'feature83',
                       'feature90', 'feature93',
                       'feature98', 'feature103', 'feature104']
-    feature_mode = ['feature1', 'feature20', 'feature32', 'feature54', 'feature60', 'feature64', 'feature65', 'feature78',
+    feature_mode = ['feature1', 'feature20', 'feature32', 'feature54', 'feature60', 'feature64', 'feature65',
+                    'feature78',
                     'feature80',
                     'feature88', 'feature92']
 
@@ -76,7 +88,8 @@ def classify(filename):
     # 载入特征和标签集
     X = Fault_diagnosis_data[
         ['feature0', 'feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6', 'feature7', 'feature8',
-         'feature9', 'feature10', 'feature11', 'feature12', 'feature13', 'feature14', 'feature15', 'feature16', 'feature17',
+         'feature9', 'feature10', 'feature11', 'feature12', 'feature13', 'feature14', 'feature15', 'feature16',
+         'feature17',
          'feature18', 'feature19', 'feature20', 'feature21', 'feature22', 'feature23', 'feature24', 'feature25',
          'feature26', 'feature27', 'feature28', 'feature29', 'feature30', 'feature31', 'feature32', 'feature33',
          'feature34', 'feature35', 'feature36', 'feature37', 'feature38', 'feature39', 'feature40', 'feature41',
@@ -91,17 +104,20 @@ def classify(filename):
          'feature106']]
     y = Fault_diagnosis_data['label']
 
-    #取测试集
-    X_rf_test = X[:500]
-    y_rf_test = y[:500]
+    X_rf_train = X[:5600]
+    y_rf_train = y[:5600]
+
+    # 取测试集
+    X_rf_test = X[5600:6296]
+    y_rf_test = y[5600:6296]
 
     # 建立随机森林模型
     rfc = RandomForestClassifier(n_estimators=281, criterion='gini', max_depth=18, max_features=107, random_state=100)
-    rfc.fit(X, y)#模型训练
+    rfc.fit(X_rf_train, y_rf_train)  # 模型训练
     y_rf_pred = rfc.predict(X_rf_test)  # 使用随机森林（281个决策树分类器）多数投票产生的预测label列表(测试集改为1000条样本)
 
     # length_train = len(X)
-    length_test = len(y_rf_test) #500
+    length_test = len(y_rf_test)  # 500
 
     TP = 0
     FP = 0
@@ -116,7 +132,7 @@ def classify(filename):
     recall_i = []
     # 循环向列表中写入数据
     while a < 6:
-        while item < length_test:  #500
+        while item < length_test:  # 500
             if a == y_rf_pred[item]:
                 if a == y_rf_test.values[item]:
                     TP += 1
@@ -132,20 +148,38 @@ def classify(filename):
         # macro_accuracy.append((TP + TN) / (TP + TN + FP + FN))    # 准确率
         precision_i.append(TP / (TP + FP))  # 精确率
         recall_i.append(TP / (TP + FN))  # 召回率
-        print("precision_i:",precision_i)
-        print("recall_i:",recall_i)
+        print("precision_i:", precision_i)
+        print("recall_i:", recall_i)
         a += 1
         TP, FP, TN, FN, item = 0, 0, 0, 0, 0
 
     b = 0
     jtem = 0
-    LabelSum_i = []
-    while b < 6:
-        while jtem < length_test:
-            if b == y_rf_test.values[jtem]:
-                LabelSum_i[b] += 1
-            jtem += 1
-        print(LabelSum_i[b]) #测试集中每一类的样本数量
+    LabelSum_i = [0, 0, 0, 0, 0, 0]
+
+    LABEL0 = 0
+    LABEL1 = 0
+    LABEL2 = 0
+    LABEL3 = 0
+    LABEL4 = 0
+    LABEL5 = 0
+
+    while jtem < length_test:
+        if 0 == y_rf_test.values[jtem]:
+            LABEL0 += 1
+        elif 1 == y_rf_test.values[jtem]:
+            LABEL1 += 1
+        elif 2 == y_rf_test.values[jtem]:
+            LABEL2 += 1
+        elif 3 == y_rf_test.values[jtem]:
+            LABEL3 += 1
+        elif 4 == y_rf_test.values[jtem]:
+            LABEL4 += 1
+        else:
+            LABEL5 += 1
+        jtem += 1
+    # print(LabelSum_i[b])  # 测试集中每一类的样本数量
+    # b += 1
 
     # %%
     # 模型评价指标
@@ -166,13 +200,13 @@ def classify(filename):
 
     # %%模型评估
     print("Test set predictions: \n {}".format(y_rf_pred))
-    print("Test_Set Score: {:.15f}".format(np.mean(y_rf_pred == y_rf_test)))  #np.mean函数输出两个矩阵/数组的相似程度
+    print("Test_Set Score: {:.15f}".format(np.mean(y_rf_pred == y_rf_test)))  # np.mean函数输出两个矩阵/数组的相似程度
 
-    #%%
-    LABEL0 = LabelSum_i[0]
-    LABEL1 = LabelSum_i[1]
-    LABEL2 = LabelSum_i[2]
-    LABEL3 = LabelSum_i[3]
-    LABEL4 = LabelSum_i[4]
-    LABEL5 = LabelSum_i[5]
-    return macro_P, macro_R, macro_F1,LABEL0, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5
+    # %%
+    # LABEL0 = LabelSum_i[0]
+    # LABEL1 = LabelSum_i[1]
+    # LABEL2 = LabelSum_i[2]
+    # LABEL3 = LabelSum_i[3]
+    # LABEL4 = LabelSum_i[4]
+    # LABEL5 = LabelSum_i[5]
+    return macro_P, macro_R, macro_F1, LABEL0, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, precision_i, recall_i
