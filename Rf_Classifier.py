@@ -21,7 +21,7 @@ from sklearn.ensemble import RandomForestClassifier
 # 导入数据集
 from sklearn.tree import plot_tree
 
-data = "E:\SoftCup\preprocess_train.csv"
+data = "C:\\Users\\Rui\\Desktop\\A10\\preprocess_train.csv"
 
 Fault_diagnosis_data = pd.read_csv(data,usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                                             21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
@@ -167,15 +167,19 @@ print(y.shape)
 # print(GS.best_score_)#返回调整好的最佳参数对应的准确率     #0.8600666212430917
 
 #%%
+#定义训练集
+X_rf_train = X[:5600]
+y_rf_train = y[:5600]
+
 #取测试集
-X_rf_test = X[:500]
-y_rf_test = y[:500]
+X_rf_test = X[5600:6296]
+y_rf_test = y[5600:6296]
 print(X_rf_test)
 print(y_rf_test)
 # %%
 # 建立随机森林模型
 rfc = RandomForestClassifier(n_estimators=281, criterion='gini', max_depth=18, max_features=107, random_state=100)
-rfc.fit(X, y)#模型训练
+rfc.fit(X_rf_train, y_rf_train)#模型训练
 #%%
 y_rf_pred = rfc.predict(X_rf_test)  # 使用随机森林（281个决策树分类器）多数投票产生的预测label列表(测试集改为1000条样本)
 print(y_rf_pred)
@@ -229,29 +233,7 @@ while a < 6:
     a += 1
     TP, FP, TN, FN, item = 0, 0, 0, 0, 0
 
-#%%
-n = 0
-lab = 0
-fenzi = 0
-p_fenmu = 0
-r_fenmu = 0
-prec = []
-reca = []
-while lab < 6:
-    while n < length_test:
-        if lab == y_rf_pred[n]:
-            if lab == y_rf_test[n]:
-                fenzi += 1
-        elif lab == y_rf_pred[n]:
-            p_fenmu += 1
-        elif lab == y_rf_test:
-            r_fenmu += 1
-        prec.append(fenzi/p_fenmu)
-        reca.append((fenzi/r_fenmu))
-    print("precision_i:",prec)
-    print("recall_i:",reca)
-    lab += 1
-    fenzi,p_fenmu,r_fenmu = 0,0,0
+
 # %%
 # 模型评价指标
 sum = 0
@@ -284,7 +266,7 @@ import pandas as pd
 # write date by using the form of dict
 df = pd.DataFrame({'y_rf_prediction': y_rf_pred, 'y_rf_test': y_rf_test})
 df.to_csv("./data/y_rf_pred_test.csv", index=False)
-print(1)
+# print(1)
 # %%模型评估
 print("Test set predictions: \n {}".format(y_rf_pred))
 print("Test_Set Score: {:.15f}".format(np.mean(y_rf_pred == y_rf_test)))  #np.mean函数输出两个矩阵/数组的相似程度
@@ -294,17 +276,17 @@ print("Test_Set Score: {:.15f}".format(np.mean(y_rf_pred == y_rf_test)))  #np.me
 # import importlib
 # importlib.reload(plt)
 from sklearn import tree
-import pydotplus
-target_names = ["0", "1", "2", "3", "4", "5"]
-feature_name = ['feature0', 'feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6', 'feature7', 'feature8', 'feature9', 'feature10', 'feature11', 'feature12', 'feature13', 'feature14', 'feature15', 'feature16', 'feature17', 'feature18', 'feature19', 'feature20', 'feature21', 'feature22', 'feature23', 'feature24', 'feature25', 'feature26', 'feature27', 'feature28', 'feature29', 'feature30', 'feature31', 'feature32', 'feature33', 'feature34', 'feature35', 'feature36', 'feature37', 'feature38', 'feature39', 'feature40', 'feature41', 'feature42', 'feature43', 'feature44', 'feature45', 'feature46', 'feature47', 'feature48', 'feature49', 'feature50', 'feature51', 'feature52', 'feature53', 'feature54', 'feature55', 'feature56', 'feature57', 'feature58', 'feature59', 'feature60', 'feature61', 'feature62', 'feature63', 'feature64', 'feature65', 'feature66', 'feature67', 'feature68', 'feature69', 'feature70', 'feature71', 'feature72', 'feature73', 'feature74', 'feature75', 'feature76', 'feature77', 'feature78', 'feature79', 'feature80', 'feature81', 'feature82', 'feature83', 'feature84', 'feature85', 'feature86', 'feature87', 'feature88', 'feature89', 'feature90', 'feature91', 'feature92', 'feature93', 'feature94', 'feature95', 'feature96', 'feature97', 'feature98', 'feature99', 'feature100', 'feature101', 'feature102', 'feature103', 'feature104', 'feature105', 'feature106']
-Estimators = rfc.estimators_
-for index, model in enumerate(Estimators):
-    filename = 'tree_estimators_' + str(index) + '.pdf'
-    dot_data = tree.export_graphviz(model , out_file=None,
-                         feature_names=feature_name,
-                         class_names=target_names,
-                         filled=True, rounded=True,
-                         special_characters=True)
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    graph.write_pdf(filename)
+# import pydotplus
+# target_names = ["0", "1", "2", "3", "4", "5"]
+# feature_name = ['feature0', 'feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6', 'feature7', 'feature8', 'feature9', 'feature10', 'feature11', 'feature12', 'feature13', 'feature14', 'feature15', 'feature16', 'feature17', 'feature18', 'feature19', 'feature20', 'feature21', 'feature22', 'feature23', 'feature24', 'feature25', 'feature26', 'feature27', 'feature28', 'feature29', 'feature30', 'feature31', 'feature32', 'feature33', 'feature34', 'feature35', 'feature36', 'feature37', 'feature38', 'feature39', 'feature40', 'feature41', 'feature42', 'feature43', 'feature44', 'feature45', 'feature46', 'feature47', 'feature48', 'feature49', 'feature50', 'feature51', 'feature52', 'feature53', 'feature54', 'feature55', 'feature56', 'feature57', 'feature58', 'feature59', 'feature60', 'feature61', 'feature62', 'feature63', 'feature64', 'feature65', 'feature66', 'feature67', 'feature68', 'feature69', 'feature70', 'feature71', 'feature72', 'feature73', 'feature74', 'feature75', 'feature76', 'feature77', 'feature78', 'feature79', 'feature80', 'feature81', 'feature82', 'feature83', 'feature84', 'feature85', 'feature86', 'feature87', 'feature88', 'feature89', 'feature90', 'feature91', 'feature92', 'feature93', 'feature94', 'feature95', 'feature96', 'feature97', 'feature98', 'feature99', 'feature100', 'feature101', 'feature102', 'feature103', 'feature104', 'feature105', 'feature106']
+# Estimators = rfc.estimators_
+# for index, model in enumerate(Estimators):
+#     filename = 'tree_estimators_' + str(index) + '.pdf'
+#     dot_data = tree.export_graphviz(model , out_file=None,
+#                          feature_names=feature_name,
+#                          class_names=target_names,
+#                          filled=True, rounded=True,
+#                          special_characters=True)
+#     graph = pydotplus.graph_from_dot_data(dot_data)
+#     graph.write_pdf(filename)
 
