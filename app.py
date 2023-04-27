@@ -334,6 +334,20 @@ def file_upload():
     # json_f = json.dumps(dict)
     return Respones_s.success(dict)
 
+# 测试用 上传
+@app.route('/file_upload11', methods=['POST'])
+def file_upload11():
+    file = request.files.get('file')
+    dict = {'macro_P': 0.8739832840864444, 'macro_R': 0.8050854618463398, 'macro_F1': 0.8381208186015313,
+            'LABEL0': 359, 'LABEL1': 66, 'LABEL2': 120, 'LABEL3': 56, 'LABEL4': 37, 'LABEL5': 58,
+            'precision_i': [0.883248730964467, 0.6129032258064516, 0.7477477477477478, 1.0, 1.0, 1.0
+                            ],
+            'recall_i': [0.9693593314763231, 0.5757575757575758, 0.6916666666666667, 0.7857142857142857,
+                         0.9459459459459459, 0.8620689655172413
+                         ]}
+    # json_f = json.dumps(dict)
+    return Respones_s.success(dict)
+
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
