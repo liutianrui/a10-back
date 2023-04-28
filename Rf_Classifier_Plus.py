@@ -8,6 +8,7 @@
 # %% 导入相关包
 import numpy as np
 import pandas as pd
+import json
 # import sklearn.tree as st
 # import sklearn.feature_selection as sf
 # import seaborn as sns
@@ -74,6 +75,8 @@ def loadData(Fault_diagnosis_data):
     
     return X_test,y_test
 
+
+
 def classify(filepath):
     data_test = filepath
     data_train = "E:SoftCup\preprocess_train.csv"
@@ -121,8 +124,8 @@ def classify(filepath):
     #    X_rf_train = X_test
 
     # 取测试集
-    X_rf_test = X_test
-    y_rf_test = y_test
+    X_rf_test = X_test[:100]
+    y_rf_test = y_test[:100]
 
     # 建立随机森林模型
     rfc = RandomForestClassifier(n_estimators=281, criterion='gini', max_depth=18, max_features=107, random_state=100)
@@ -222,4 +225,22 @@ def classify(filepath):
     # LABEL3 = LabelSum_i[3]
     # LABEL4 = LabelSum_i[4]
     # LABEL5 = LabelSum_i[5]
+
+    # 测试结果json文件输出
+    dictionary = {}
+    keys = []
+    values = []
+    for i in range(len(y_rf_test)):
+        keys.append((str(y_rf_test.index[i])))
+        values.append(int(y_rf_pred[i]))
+    print(keys)
+    print(values)
+
+    for key, value in zip(keys, values):
+        dictionary[key] = value
+    print(dictionary)
+
+    with open('./data/classifyResults.json', 'w') as json_file:
+        json.dump(dictionary, json_file, indent=4)
+
     return macro_P, macro_R, macro_F1, LABEL0, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, precision_i, recall_i

@@ -21,7 +21,7 @@ from sklearn.ensemble import RandomForestClassifier
 # 导入数据集
 from sklearn.tree import plot_tree
 
-data = "C:\\Users\\Rui\\Desktop\\A10\\preprocess_train.csv"
+data = "E:SoftCup\preprocess_train.csv"
 
 Fault_diagnosis_data = pd.read_csv(data,usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                                             21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
@@ -172,8 +172,8 @@ X_rf_train = X[:5600]
 y_rf_train = y[:5600]
 
 #取测试集
-X_rf_test = X[5600:6296]
-y_rf_test = y[5600:6296]
+X_rf_test = X[5600:5800]
+y_rf_test = y[5600:5800]
 print(X_rf_test)
 print(y_rf_test)
 # %%
@@ -260,6 +260,32 @@ print("排行得分：", 100 * (2 * macro_P * macro_R) / (macro_P + macro_R))
 # print("Label1-F1-score：",(2*precision_L1*recall_L1)/(precision_L1+recall_L1))
 
 # %%
+#{"k1": "v1"}, {"k2": "v2"}, {"k3": "v3"}, {"k4": "v4"}
+import json
+infors_li = []
+for i in range(len(y_rf_test)):
+    infors_li.append('{"' + str(y_rf_test.index[i]) + ':' + ' ' + '"' + str(y_rf_test.values[i]) + '"}')
+with open("./data/infos_li.json", "w") as f:
+    json.dump(infors_li, f, indent=4)
+
+#%%
+# {"0":3,"1":2,"2":4,"3":5,"4":1}
+dictionary = {}
+keys = []
+values = []
+for i in range(len(y_rf_test)):
+    keys.append((str(y_rf_test.index[i])))
+    values.append(int(y_rf_pred[i]))
+
+for key, value in zip(keys, values):
+    dictionary[key] = value
+print(dictionary)
+# json_str = json.dumps(dictionary, indent=4)
+with open('./data/classifyResults.json', 'w') as json_file:
+    json.dump(dictionary,json_file,indent=4)
+
+
+#%%
 # 将y_rf_pred和y_rf_test写入到csv文件
 import pandas as pd
 # use pandas
