@@ -348,6 +348,15 @@ def file_upload11():
     # json_f = json.dumps(dict)
     return Respones_s.success(dict)
 
+# 预测结果json下载
+@app.route('/jsonDownload',methods=['GET'])
+def jsonDownload():
+    with open('./data/classifyResults.json', 'rb') as f:
+        stream = f.read()
+    # response = Response(stream, content_type='application/json') // 返回json格式
+    response = Response(stream, content_type='application/octet-stream')
+    response.headers['Content-disposition'] = 'attachment; filename=classifyResults.json'
+    return response
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
